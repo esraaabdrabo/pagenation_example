@@ -33,6 +33,7 @@ class _PostsListViewState extends State<PostsListView> {
           items: cubit.posts!,
           childBuilder: (index) => Column(
                 children: [
+                  Text(index.toString()),
                   Text(cubit.posts![index].title),
                   Text(cubit.posts![index].body)
                 ],

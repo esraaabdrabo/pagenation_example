@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagenation_example/view/posts_view.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +12,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const PostsView(),
+    return ResponsiveSizer(
+      builder: (p0, p1, p2) => MaterialApp(
+        home: const PostsView(),
+      ),
     );
   }
 }

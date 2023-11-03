@@ -16,7 +16,7 @@ class PostsCubit extends Cubit<PostsStates> {
   ///results (the actual list of posts)
   ///param [q] string that indicates the qurey to filter with (comming from 'search' method )
 
-  Future<void> call({String? q = ''}) async {
+  Future<void> call() async {
     //when we can fetch more posts?
     // if the pagenation result is telling us that there's a next url & !=null
     if (_canFetchMore()) {
@@ -50,7 +50,7 @@ class PostsCubit extends Cubit<PostsStates> {
         emit(PostsSuccessNoPostsState());
       }
     } else {
-      this.posts = posts;
+      this.posts?.addAll(posts);
       _nextPageNumber++;
     }
   }
