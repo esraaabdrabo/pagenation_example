@@ -6,11 +6,13 @@ abstract class Services {
     ..options.baseUrl = 'https://jsonplaceholder.typicode.com';
   static Future<List<PostModel>> getData({String? pageNumber}) async {
     var postsJson = await _dio.get('/posts?_page=$pageNumber');
-    List<Map<String, dynamic>> postsList = postsJson.data;
+    List<dynamic> postsList = postsJson.data;
     List<PostModel> posts = [];
+    print(postsList);
     for (var post in postsList) {
-      PostModel.fromJson(post);
+      posts.add(PostModel.fromJson(post));
     }
+    print(posts);
     return posts;
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pagenation_example/controller/cubit.dart';
 import 'package:pagenation_example/controller/states.dart';
+import 'package:pagenation_example/view/posts_pagenated_list.dart';
+
 class PostsView extends StatefulWidget {
   const PostsView({super.key});
 

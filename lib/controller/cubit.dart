@@ -50,6 +50,7 @@ class PostsCubit extends Cubit<PostsStates> {
         emit(PostsSuccessNoPostsState());
       }
     } else {
+      this.posts = posts;
       _nextPageNumber++;
     }
   }
