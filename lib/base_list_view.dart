@@ -63,12 +63,15 @@ class _PagenatedListViewState<B extends StateStreamable<States>, States,
         //the parent is bloc consumer with the passed bloc & states types
         //we are using this here to rebuild the widget whenever a new state has been emitted
         child: BlocConsumer<B, States>(listener: (context, state) {
-      //example to show that we can use  BlocConsumer you also can use bloc builder
+      //example to show that we can use BlocConsumer you also can use bloc builder
       if (_isLoading(state)) {
         print("loading");
       } else if (_isAllCaught(state)) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("the all caught state has been emitted")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("the all caught state has been emitted"),
+          ),
+        );
       }
     }, builder: (context, state) {
       return ListView.separated(
@@ -103,9 +106,11 @@ class _PagenatedListViewState<B extends StateStreamable<States>, States,
     }));
   }
 
-  bool _isAllCaught(state) => "$state" == "${widget.allCaughtState}";
+  bool _isAllCaught(state) =>
+      state.runtimeType == widget.allCaughtState.runtimeType;
 
-  bool _isLoading(state) => "$state" == "${widget.loadingState}";
+  bool _isLoading(state) =>
+      state.runtimeType == widget.loadingState.runtimeType;
 
   bool _isLastItem(int index) => index == widget.items.length - 1;
 }

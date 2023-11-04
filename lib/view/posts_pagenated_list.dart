@@ -61,7 +61,7 @@ class _Item extends StatelessWidget {
       tileColor: Colors.grey.withOpacity(.1),
       titleAlignment: ListTileTitleAlignment.top,
       leading: CircleAvatar(
-        radius: 3.w,
+        radius: 5.w,
         child: Text("${index + 1}"),
       ),
       title: Text("Title : ${post.title}"),
