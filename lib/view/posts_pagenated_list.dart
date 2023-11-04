@@ -4,6 +4,7 @@ import 'package:pagenation_example/base_list_view.dart';
 import 'package:pagenation_example/controller/cubit.dart';
 import 'package:pagenation_example/controller/states.dart';
 import 'package:pagenation_example/post_model.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class PostsListView extends StatefulWidget {
   const PostsListView({super.key});
@@ -31,12 +32,20 @@ class _PostsListViewState extends State<PostsListView> {
               }),
           controller: controller,
           items: cubit.posts!,
-          childBuilder: (index) => Column(
-                children: [
-                  Text(index.toString()),
-                  Text(cubit.posts![index].title),
-                  Text(cubit.posts![index].body)
-                ],
+          childBuilder: (index) => ListTile(
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                tileColor: Colors.grey.withOpacity(.1),
+                titleAlignment: ListTileTitleAlignment.top,
+                leading: CircleAvatar(
+                  radius: 3.w,
+                  child: Text(index.toString()),
+                ),
+                title: Text("Title : ${cubit.posts![index].title}"),
+                subtitle: Text("Body : ${cubit.posts![index].body}"),
               ),
           allCaught: cubit.state is PostsSuccessAllCaughtState,
           isLoading: cubit.state is PostsPagentationLoadingState);

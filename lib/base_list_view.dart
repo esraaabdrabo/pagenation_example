@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 ///reusable  ListView.separated widget that is wrapped with 'Expanded' and 'BlocBuilder' widgets
 ///first of all the widget will take the cubit type , it's states and the model data type so in what we will use those?
 ///the cubit and it's states will be given to  BlocBuilder as  BlocBuilder<B, States>
@@ -110,7 +111,7 @@ class _LoadingWidget extends StatelessWidget {
 }
 
 class _AllCaughtUpWidget extends StatelessWidget {
-  const _AllCaughtUpWidget({super.key});
+  const _AllCaughtUpWidget();
 
   @override
   Widget build(BuildContext context) {

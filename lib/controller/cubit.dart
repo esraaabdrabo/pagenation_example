@@ -48,9 +48,9 @@ class PostsCubit extends Cubit<PostsStates> {
       //if there is no other posts then emit the last state which
       // indicates that there's no other call can be done
       if (_nextPageNumber == 1) {
-        emit(PostsSuccessAllCaughtState());
-      } else {
         emit(PostsSuccessNoPostsState());
+      } else {
+        emit(PostsSuccessAllCaughtState());
       }
     } else {
       if (this.posts == null) {
