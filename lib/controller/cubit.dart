@@ -9,21 +9,14 @@ class PostsCubit extends Cubit<PostsStates> {
   int _nextPageNumber = 1;
 
   ///fetching the posts
-  ///will use pagenation method to fetch the posts the result will be saved in 'pagenationResult'
-  ///with following attributes
-  ///count indicates how much posts the system has
-  ///next (url to fetch the next page) same as previous
-  ///results (the actual list of posts)
-  ///param [q] string that indicates the qurey to filter with (comming from 'search' method )
+  ///will use pagenation method to fetch the posts , the result will be saved in 'posts'
 
   Future<void> call() async {
     //when we can fetch more posts?
-    // if the pagenation result is telling us that there's a next url & !=null
+    // if the state is not 'PostsSuccessAllCaughtState'
     if (_canFetchMore()) {
-      //show loading (normal loading - pagenation loading - no loading)
+      //show loading (normal loading - pagenation loading )
       _emitLoadingState();
-
-      //the use can return type is either so we will check for the faliure and succes
       await Services.getData(pageNumber: "$_nextPageNumber")
           .then((value) => _emitFetchingSuccessState(value));
     }
@@ -32,13 +25,23 @@ class PostsCubit extends Cubit<PostsStates> {
   ///after fetching the posts succefully we will emit a success state
   ///if we fetch the posts succefully then we will emit 'PostsSuccessState'
   ///
-  ///1-just in case we found that no next url that means that those were the last posts so will emit
+  ///1-just in case we found that no posts was fetched and the '_nextPageNumber' is not equal to 1
+  /// that means that those were the last posts so will emit a new state =>
   ///'PostsSuccessAllCaughtState' to notify the ui not making any other requests will scrolling and
   ///show the specific widget for all caught state
-  ///
-  ///2-if all ended well but there is no data we will emit 'PostsSuccessNoPostsState'
-  ///to notify the ui that it should display no data found widget
+  /// but if the '_nextPageNumber' is equal to 1 that means that there are no posts
 
+  ///2-if all ended well but there is no data we will emit 'PostsSuccessNoPostsState'
+  ///so the cubit will emit a new state => 'PostsSuccessNoPostsState' indicates that the backend has no data right now
+  ///so the ui will be notified to show the no data widget
+
+  ///if the api call returned data then we need to
+  ///1 add the new data to the old one by calling 'addAll' method
+  ///this will happen only if the posts not equal to null (means that we have started the pagenation)
+  ///2 assign the posts to the cubit's posts list
+  ///(only if the posts is equal to null that means that this call is the first one)
+  ///as the last step we will update the '_nextPageNumber' so the next time the listener function is calling
+  ///the cubit's call method that pagenation will get the next page
   void _emitFetchingSuccessState(List<PostModel> posts) {
     emit(PostsSuccessState());
     if (posts.isEmpty) {
@@ -50,13 +53,17 @@ class PostsCubit extends Cubit<PostsStates> {
         emit(PostsSuccessNoPostsState());
       }
     } else {
-      this.posts?.addAll(posts);
+      if (this.posts == null) {
+        this.posts = posts;
+      } else {
+        this.posts!.addAll(posts);
+      }
       _nextPageNumber++;
     }
   }
 
-  ///if the [pagenationResult] variable is null it means that this is the first fetch for the data so will show the normal loading
-  ///else this means that we will show the loading after the existing comments as pagenation loading
+  ///if the [posts] variable is null it means that this is the first fetch for the data so will show the normal loading
+  ///else this means that we will show the loading after the existing posts as pagenation loading
   void _emitLoadingState() {
     if (posts == null) {
       emit(PostsLoadingState());
