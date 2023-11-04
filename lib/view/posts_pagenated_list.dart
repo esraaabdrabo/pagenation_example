@@ -19,36 +19,43 @@ class _PostsListViewState extends State<PostsListView> {
   @override
   Widget build(BuildContext context) {
     final PostsCubit cubit = BlocProvider.of<PostsCubit>(context);
-    return BlocBuilder<PostsCubit, PostsStates>(builder: (context, state) {
-      return PagenatedListView<PostsCubit, PostsStates, PostModel>(
-          init: () => controller.addListener(() async {
-                var percentageOftotalLength =
-                    0.7 * controller.position.maxScrollExtent;
-                var currentLength = controller.position.pixels;
-                if (currentLength >= percentageOftotalLength &&
-                    cubit.state is! PostsPagentationLoadingState) {
-                  await cubit.call();
-                }
-              }),
-          controller: controller,
-          items: cubit.posts!,
-          childBuilder: (index) => ListTile(
-                shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                tileColor: Colors.grey.withOpacity(.1),
-                titleAlignment: ListTileTitleAlignment.top,
-                leading: CircleAvatar(
-                  radius: 3.w,
-                  child: Text(index.toString()),
-                ),
-                title: Text("Title : ${cubit.posts![index].title}"),
-                subtitle: Text("Body : ${cubit.posts![index].body}"),
-              ),
-          allCaught: cubit.state is PostsSuccessAllCaughtState,
-          isLoading: cubit.state is PostsPagentationLoadingState);
-    });
+
+    ///why we are using the bloc builder here ? to update the value of parameters
+    ///[allCaught] and [isLoading] when emitting there state
+    return BlocBuilder<PostsCubit, PostsStates>(
+        buildWhen: (previous, current) =>
+            current is PostsSuccessAllCaughtState ||
+            current is PostsPagentationLoadingState,
+        builder: (context, state) {
+          return PagenatedListView<PostsCubit, PostsStates, PostModel>(
+              init: () => controller.addListener(() async {
+                    var percentageOftotalLength =
+                        0.7 * controller.position.maxScrollExtent;
+                    var currentLength = controller.position.pixels;
+                    if (currentLength >= percentageOftotalLength &&
+                        cubit.state is! PostsPagentationLoadingState) {
+                      await cubit.call();
+                    }
+                  }),
+              controller: controller,
+              items: cubit.posts!,
+              childBuilder: (index) => ListTile(
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    tileColor: Colors.grey.withOpacity(.1),
+                    titleAlignment: ListTileTitleAlignment.top,
+                    leading: CircleAvatar(
+                      radius: 3.w,
+                      child: Text("${index + 1}"),
+                    ),
+                    title: Text("Title : ${cubit.posts![index].title}"),
+                    subtitle: Text("Body : ${cubit.posts![index].body}"),
+                  ),
+              allCaughtState: PostsSuccessAllCaughtState(),
+              loadingState: PostsPagentationLoadingState());
+        });
   }
 }
