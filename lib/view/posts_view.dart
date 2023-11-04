@@ -15,6 +15,7 @@ class _PostsViewState extends State<PostsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Exapmle")),
       body: Center(
         child: BlocProvider(
             create: (context) => PostsCubit(PostsInitState())..call(),

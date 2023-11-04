@@ -13,7 +13,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 ///this function should be passed as a parameter because it will make the cubit call the fetching method .
 ///[loadingState] is a 'States' type variable that is necessary to be used in the item builder method to
 /// show the '_LoadingWidget' whenever we need using '_isLoading()' method
-///[allCaughtState] is a  'States' type  variable that is necessary to be used in the item builder method 
+///[allCaughtState] is a  'States' type  variable that is necessary to be used in the item builder method
 ///to show the 'AllCaughtUpWidget' whenever we need using '_isAllCaught()' method (used when there is no other data to fetch [when the next == null])
 ///[items] are a list<DataType>
 ///[childBuilder] is a function takes int as the index of the child and return custom widget for every screen
@@ -63,12 +63,12 @@ class _PagenatedListViewState<B extends StateStreamable<States>, States,
         //the parent is bloc consumer with the passed bloc & states types
         //we are using this here to rebuild the widget whenever a new state has been emitted
         child: BlocConsumer<B, States>(listener: (context, state) {
-          //example to show that we can use  BlocConsumer you also can use bloc builder
+      //example to show that we can use  BlocConsumer you also can use bloc builder
       if (_isLoading(state)) {
         print("loading");
       } else if (_isAllCaught(state)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("the all caught state has been emitted")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("the all caught state has been emitted")));
       }
     }, builder: (context, state) {
       return ListView.separated(

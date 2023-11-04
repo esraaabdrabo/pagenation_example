@@ -39,23 +39,33 @@ class _PostsListViewState extends State<PostsListView> {
                   }),
               controller: controller,
               items: cubit.posts!,
-              childBuilder: (index) => ListTile(
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    tileColor: Colors.grey.withOpacity(.1),
-                    titleAlignment: ListTileTitleAlignment.top,
-                    leading: CircleAvatar(
-                      radius: 3.w,
-                      child: Text("${index + 1}"),
-                    ),
-                    title: Text("Title : ${cubit.posts![index].title}"),
-                    subtitle: Text("Body : ${cubit.posts![index].body}"),
-                  ),
+              childBuilder: (index) => _Item(cubit.posts![index], index),
               allCaughtState: PostsSuccessAllCaughtState(),
               loadingState: PostsPagentationLoadingState());
         });
+  }
+}
+
+class _Item extends StatelessWidget {
+  const _Item(this.post, this.index);
+
+  final PostModel post;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      shape: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      tileColor: Colors.grey.withOpacity(.1),
+      titleAlignment: ListTileTitleAlignment.top,
+      leading: CircleAvatar(
+        radius: 3.w,
+        child: Text("${index + 1}"),
+      ),
+      title: Text("Title : ${post.title}"),
+      subtitle: Text("Body : ${post.body}"),
+    );
   }
 }
