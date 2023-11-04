@@ -8,11 +8,9 @@ abstract class Services {
     var postsJson = await _dio.get('/posts?_page=$pageNumber');
     List<dynamic> postsList = postsJson.data;
     List<PostModel> posts = [];
-    print(postsList);
     for (var post in postsList) {
       posts.add(PostModel.fromJson(post));
     }
-    print(posts);
     return posts;
   }
 }
